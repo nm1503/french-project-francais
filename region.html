@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez les détails d'une région de France — population, climat, tourisme, culture, patrimoine, économie et spécialités.">
+  <title>Région — Découvrez la France</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text y='32' font-size='32'>🇫🇷</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Region detail page specific styles */
+    .region-page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: calc(var(--header-height) + 2.5rem) 1.5rem 3rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--blue-soft);
+      margin-bottom: 2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      background: var(--blue);
+      color: var(--white);
+      transform: translateX(-3px);
+    }
+
+    .region-hero {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .region-hero__name {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-mode .region-hero__name {
+      color: var(--blue-soft);
+    }
+
+    .region-hero__capitale {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+    }
+
+    .region-hero__capitale span {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      padding: 1.3rem;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card__icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-card__label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-card__value {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Content sections */
+    .section-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition-fast);
+    }
+
+    .section-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .section-card__header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-card__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .section-card__icon.blue { background: rgba(0, 35, 149, 0.08); }
+    .section-card__icon.red { background: rgba(237, 41, 57, 0.08); }
+    .section-card__icon.green { background: rgba(34, 139, 34, 0.08); }
+    .section-card__icon.purple { background: rgba(128, 0, 128, 0.08); }
+    .section-card__icon.orange { background: rgba(255, 140, 0, 0.08); }
+    .section-card__icon.gold { background: rgba(218, 165, 32, 0.08); }
+
+    body.dark-mode .section-card__icon.blue { background: rgba(58, 95, 199, 0.15); }
+    body.dark-mode .section-card__icon.red { background: rgba(237, 41, 57, 0.15); }
+    body.dark-mode .section-card__icon.green { background: rgba(34, 139, 34, 0.15); }
+    body.dark-mode .section-card__icon.purple { background: rgba(128, 0, 128, 0.15); }
+    body.dark-mode .section-card__icon.orange { background: rgba(255, 140, 0, 0.15); }
+    body.dark-mode .section-card__icon.gold { background: rgba(218, 165, 32, 0.15); }
+
+    .section-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .section-card__text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      background: rgba(0, 35, 149, 0.07);
+      color: var(--blue);
+      transition: all var(--transition-fast);
+    }
+
+    .tag:hover {
+      background: var(--blue);
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+
+    body.dark-mode .tag {
+      background: rgba(58, 95, 199, 0.15);
+      color: var(--blue-soft);
+    }
+
+    body.dark-mode .tag:hover {
+      background: var(--blue-soft);
+      color: var(--white);
+    }
+
+    .tag.tag-red {
+      background: rgba(237, 41, 57, 0.07);
+      color: var(--red);
+    }
+
+    .tag.tag-red:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    body.dark-mode .tag.tag-red {
+      background: rgba(237, 41, 57, 0.15);
+      color: var(--red-soft);
+    }
+
+    .tag.tag-green {
+      background: rgba(34, 139, 34, 0.07);
+      color: #228b22;
+    }
+
+    .tag.tag-green:hover {
+      background: #228b22;
+      color: var(--white);
+    }
+
+    /* Two-column layout for sections */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .region-hero { padding: 1.5rem; border-radius: 18px; }
+      .section-card { padding: 1.5rem; border-radius: 16px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-grid { grid-template-columns: 1fr; }
+      .region-hero__name { font-size: 1.8rem; }
+    }
+
+    /* Fade in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .fade-in:nth-child(2) { animation-delay: 0.05s; }
+    .fade-in:nth-child(3) { animation-delay: 0.1s; }
+    .fade-in:nth-child(4) { animation-delay: 0.15s; }
+    .fade-in:nth-child(5) { animation-delay: 0.2s; }
+    .fade-in:nth-child(6) { animation-delay: 0.25s; }
+    .fade-in:nth-child(7) { animation-delay: 0.3s; }
+    .fade-in:nth-child(8) { animation-delay: 0.35s; }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animated"></div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <a href="index.html" class="header__logo" style="text-decoration:none;">
+      Découvrez la <span class="accent">France</span>
+    </a>
+    <div class="header__controls" id="header-controls">
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="search-input"
+               placeholder="Rechercher une région, ville…"
+               autocomplete="off">
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <a href="contact.html" class="nav-link">📬 Contact</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Changer le thème"></button>
+    </div>
+  </header>
+
+  <!-- Region Content (rendered by JS) -->
+  <main class="region-page" id="region-page">
+    <!-- Populated dynamically -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Made by Nalin M <span class="heart">❤️</span> </p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function() {
+      // Get region ID from URL
+      const params = new URLSearchParams(window.location.search);
+      const regionId = params.get("id");
+      const data = regionId ? REGIONS[regionId] : null;
+
+      if (!data) {
+        document.getElementById("region-page").innerHTML = `
+          <a href="index.html" class="back-link">← Retour à la carte</a>
+          <div class="section-card" style="text-align:center;padding:4rem 2rem;">
+            <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:var(--text-primary);margin-bottom:1rem;">Région introuvable</h2>
+            <p style="color:var(--text-secondary);">La région demandée n'existe pas. Veuillez retourner à la carte.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Update page title
+      document.title = `${data.nom} — Découvrez la France`;
+
+      const container = document.getElementById("region-page");
+      container.innerHTML = `
+        <a href="index.html" class="back-link fade-in">← Retour à la carte</a>
+
+        <!-- Hero -->
+        <div class="region-hero fade-in">
+          <h1 class="region-hero__name">${data.nom}</h1>
+          <p class="region-hero__capitale">Capitale régionale : <span>${data.capitale}</span></p>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card__icon">👥</div>
+              <div class="stat-card__label">Population</div>
+              <div class="stat-card__value">${data.population}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon">📐</div>
+              <div class="stat-card__label">Superficie</div>
+              <div class="stat-card__value">${data.superficie}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon">🏛️</div>
+              <div class="stat-card__label">Capitale</div>
+              <div class="stat-card__value">${data.capitale}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Climate -->
+        <div class="section-card fade-in">
+          <div class="section-card__header">
+            <div class="section-card__icon blue">🌤️</div>
+            <h2 class="section-card__title">Climat</h2>
+          </div>
+          <p class="section-card__text">${data.climat}</p>
+        </div>
+
+        <!-- Two column: Culture + Patrimoine -->
+        <div class="two-col fade-in">
+          <div class="section-card" style="margin-bottom:0;">
+            <div class="section-card__header">
+              <div class="section-card__icon purple">🎭</div>
+              <h2 class="section-card__title">Culture</h2>
+            </div>
+            <p class="section-card__text">${data.culture}</p>
+          </div>
+          <div class="section-card" style="margin-bottom:0;">
+            <div class="section-card__header">
+              <div class="section-card__icon gold">🏛️</div>
+              <h2 class="section-card__title">Patrimoine</h2>
+            </div>
+            <p class="section-card__text">${data.patrimoine}</p>
+          </div>
+        </div>
+
+        <!-- Tourist sites -->
+        <div class="section-card fade-in">
+          <div class="section-card__header">
+            <div class="section-card__icon green">📍</div>
+            <h2 class="section-card__title">Sites Touristiques</h2>
+          </div>
+          <div class="tag-list">
+            ${data.sitesTouristiques.map(s => `<span class="tag tag-green">${s}</span>`).join("")}
+          </div>
+        </div>
+
+        <!-- Economy -->
+        <div class="section-card fade-in">
+          <div class="section-card__header">
+            <div class="section-card__icon orange">💼</div>
+            <h2 class="section-card__title">Économie</h2>
+          </div>
+          <p class="section-card__text">${data.economie}</p>
+        </div>
+
+        <!-- Specialties -->
+        <div class="section-card fade-in">
+          <div class="section-card__header">
+            <div class="section-card__icon red">🍷</div>
+            <h2 class="section-card__title">Spécialités Régionales</h2>
+          </div>
+          <div class="tag-list">
+            ${data.specialites.map(s => `<span class="tag">${s}</span>`).join("")}
+          </div>
+        </div>
+
+        <!-- Fashion & Luxury (if data exists) -->
+        ${data.mode && data.mode.length > 0 ? `
+        <div class="section-card fade-in">
+          <div class="section-card__header">
+            <div class="section-card__icon purple">👗</div>
+            <h2 class="section-card__title">Mode & Maisons de Luxe</h2>
+          </div>
+          <div class="tag-list">
+            ${data.mode.map(m => `<span class="tag tag-red">${m}</span>`).join("")}
+          </div>
+        </div>
+        ` : ""}
+      `;
+    })();
+  </script>
+</body>
+</html>

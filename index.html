@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez la France — Explorez toutes les régions de France à travers une carte interactive. Climat, tourisme, culture, patrimoine et spécialités régionales.">
+  <meta name="keywords" content="France, régions, carte interactive, tourisme, culture, patrimoine, gastronomie">
+  <meta name="author" content="Découvrez la France">
+  <title>Découvrez la France — Carte Interactive des Régions</title>
+
+  <!-- Favicon (French flag colors) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text y='32' font-size='32'>🇫🇷</text></svg>">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animated"></div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="header__logo">
+      Découvrez la <span class="accent">France</span>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu">☰</button>
+
+    <div class="header__controls" id="header-controls">
+      <!-- Search -->
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="search-input"
+               placeholder="Rechercher une région, ville…"
+               autocomplete="off">
+        <div class="search-results" id="search-results"></div>
+      </div>
+
+      <!-- Contact Link -->
+      <a href="contact.html" class="nav-link" id="contact-link">📬 Contact</a>
+
+      <!-- Dark/Light Mode -->
+      <button class="theme-toggle" id="theme-toggle" aria-label="Changer le thème"></button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <h1 class="hero__title">
+      Explorez les Régions de <span class="highlight">France</span>
+    </h1>
+    <p class="hero__subtitle">
+      Survolez une région pour un aperçu rapide, cliquez pour découvrir sa culture, son patrimoine et ses spécialités.
+    </p>
+  </section>
+
+  <!-- ========== MAP ========== -->
+  <section class="map-section">
+    <div class="map-wrapper">
+      <div id="map-container"></div>
+
+      <!-- Zoom Controls -->
+      <div class="map-controls">
+        <button class="map-control-btn" id="zoom-in" aria-label="Zoom avant">＋</button>
+        <button class="map-control-btn" id="zoom-out" aria-label="Zoom arrière">−</button>
+        <button class="map-control-btn" id="zoom-reset" aria-label="Réinitialiser la vue" style="font-size:0.85rem;">⟳</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TOOLTIP ========== -->
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip__card">
+      <div class="tooltip__title"></div>
+      <div class="tooltip__row">
+        <strong>Population</strong>
+        <span id="tip-population"></span>
+      </div>
+      <div class="tooltip__row" style="flex-direction:column;">
+        <strong>Climat</strong>
+        <span id="tip-climate" style="margin-top:0.2rem;"></span>
+      </div>
+      <div class="tooltip__attractions" id="tip-attractions"></div>
+    </div>
+  </div>
+
+
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <p>Made by Nalin M <span class="heart">❤️</span> </p>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
